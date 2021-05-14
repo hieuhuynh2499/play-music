@@ -41,6 +41,34 @@ const listsong = [
         path:"./mp3/TinhYeuMauHong.mp3",
         image:"http://tapchianhdep.com/wp-content/uploads/2016/07/ngam-anh-hot-girl-xinh-dep-tren-facebook-1.jpg"
     },
+    {
+        id:7,
+        name:"sài gòn đau lòng quá",
+        singer:"sám",
+        path:"./mp3/SaiGonDauLongQua.mp3",
+        image:"http://tapchianhdep.com/wp-content/uploads/2016/07/ngam-anh-hot-girl-xinh-dep-tren-facebook-1.jpg"
+    },
+    {
+        id:8,
+        name:"yêu lại từ đầu",
+        singer:"khác việt",
+        path:"./mp3/YeuLaiTuDau-KhacViet_354qr.mp3",
+        image:"https://cdn.phunusuckhoe.vn/ctv_thyen/bai-trac-nghiem-tam-ly-giup-ban-tu-giai-ma-nhung-dieu-an-giau-ben-trong-con-nguoi-ban4.jpg"
+    },
+    {
+        id:9,
+        name:"tình bạn diệu kỳ",
+        singer:"ricky start eme",
+        path:"./mp3/TinhBanDieuKy-AMeeRickyStarLangLD-6927558.mp3",
+        image:"https://i.imgur.com/EHWU6ws.jpg"
+    },
+    {
+        id:10,
+        name:"nàng thơ",
+        singer:"dũng",
+        path:"./mp3/NangTho-HoangDung-6413381.mp3",
+        image:"https://1.bp.blogspot.com/-8022VUd8BHI/Xqt_fZB_A_I/AAAAAAAAk94/MwSLlz-XuX8HXHtb7rqJpyt3x12mN04cwCLcBGAsYHQ/s1600/anh-girl-xinh-4k-net-duyen-gai-tay.jpg"
+    },
 ];
 const playlist = document.querySelector(".playlist");
 const audioSong = document.getElementById("audio");
@@ -69,6 +97,7 @@ function showListSong (listsong) {
         </div>
     </div>`)
     playlist.innerHTML = RenderListSong.join('');
+
 }
 function handleEventScrollY (){
     const cd = document.getElementsByClassName("cd")[0];
@@ -101,12 +130,16 @@ function start (){
     loadCurrentSong ();
     showListSong(listsong);
     const songs = playlist.querySelectorAll(".song");
-    console.log(songs);
+    songs[0].classList.add("active");
     songs.forEach(song => {
         song.addEventListener("click",()=>{
             const nameSong =  song.getElementsByTagName("h3")[0].innerText
             const songClick =  listsong.filter((item) => item.name === nameSong);
             indexCurrentSong = songClick[0].id - 1;
+            songs.forEach((songItem) => {
+                songItem.classList.remove("active");
+            })
+            songs[indexCurrentSong].classList.add("active");
             loadCurrentSong ();
             audioSong.play();
             player.classList.add("playing");
@@ -142,10 +175,18 @@ btnNext.addEventListener("click", ()=>{
     if(randomSong){
         randomIndexSong();
     }else{
+        const songs = playlist.querySelectorAll(".song");
         indexCurrentSong ++;
         if(indexCurrentSong > listsong.length - 1){
             indexCurrentSong = 0;
         }
+        songs.forEach((songItem) => {
+            songItem.classList.remove("active");
+        })
+        songs[indexCurrentSong].classList.add("active");
+        setTimeout(() =>{
+            songs[indexCurrentSong].scrollIntoView({behavior: "smooth", block: "nearest"});
+        },300)
         loadCurrentSong ();
         audioSong.play();
         player.classList.add("playing");
@@ -156,6 +197,11 @@ btnPrev.addEventListener("click", ()=>{
     if(indexCurrentSong < 0){
         indexCurrentSong = listsong.length - 1;
     }
+    const songs = playlist.querySelectorAll(".song");
+    songs.forEach((songItem) => {
+        songItem.classList.remove("active");
+    })
+    songs[indexCurrentSong].classList.add("active");
     loadCurrentSong ();
     audioSong.play();
     player.classList.add("playing");
